@@ -17,7 +17,7 @@
 3. A **refiner** rewrites the text from that REASON.
 4. The loop repeats until a fresh evaluator confirms 10/10, or until three refinements. No human step inside.
 
-**Current state:** Style Guide V2 (`style/STYLE_GUIDE_V2.md`, V2.7) governs Prototypes 8 to 8.4. Every text in the current build went through this loop.
+**Current state:** Style Guide V2 (`style/STYLE_GUIDE_V2.md`, V2.8) governs Prototypes 8 to 8.4. The loop wrote or passed the current build's story text and notices, and rewrote the barks that broke V2 (§4). The user's own four lines are canon and placed as written.
 
 **History:** Style Guide V1 governed Prototype 7.13, when Farsight was still the company in the game. It stays as history (§5; [`README_V1.md`](README_V1.md)).
 
@@ -25,11 +25,11 @@
 
 | Deliverable (rubric) | Where |
 |---|---|
-| **1. Capstone-anchored style guide** (4.5) | [`style/STYLE_GUIDE_V2.md`](style/STYLE_GUIDE_V2.md): the cast and factions, then 42 rules in five constraint types. Each rule cites its GDD chunk, its test and its severity. Summary in [§1](#1-the-style-guide-v2) |
+| **1. Capstone-anchored style guide** (4.5) | [`style/STYLE_GUIDE_V2.md`](style/STYLE_GUIDE_V2.md): the cast and factions, then 42 rules in five constraint types. Each rule cites its source chunk (the GDD, the game's data or the decision log), its test and its severity. Summary in [§1](#1-the-style-guide-v2) |
 | **2. Evaluator and refiner loop** (3.0) | [`style/loop.py`](style/loop.py) and [`style/agents/v2/`](style/agents/v2/) (generator, evaluator, refiner). [`style/lint.py`](style/lint.py) supplies evidence; it does not set the grade. See [§2](#2-the-loop) |
-| **3. Before/after, three violation classes** (2.0) | [§3](#3-beforeafter-three-violation-classes): Tone, Vocabulary and lore, Formatting and length. Full traces in [`style/runs/20261029-235500-examples-v2/`](style/runs/20261029-235500-examples-v2/trace.md) |
+| **3. Before/after, three violation classes** (2.0) | [§3](#3-beforeafter-three-violation-classes): Tone, Vocabulary and lore, Formatting and length. Full traces in [`style/runs/20261030-000812-examples-v2/`](style/runs/20261030-000812-examples-v2/trace.md) |
 | **4. Pipeline connection** (0.5) | [§6](#6-pipeline-connection) |
-| **Real content** | [§4](#4-real-content-every-text-in-prototype-84): the text of the current build. 147 pieces went through the loop in four runs. The build is [`prototypes/p8/dummies_p8_4.html`](prototypes/p8/dummies_p8_4.html) |
+| **Real content** | [§4](#4-real-content-the-text-of-prototype-84): the text of the current build. 147 pieces went through the loop in four runs. The build is [`prototypes/p8/dummies_p8_4.html`](prototypes/p8/dummies_p8_4.html) |
 | **Evidence** | [`style/runs/`](style/runs/README.md): every agent input and output, every lint finding and every version. Each case and run has a `trace.md` and keeps the guide it read |
 
 ## 1. The style guide (V2)
@@ -37,7 +37,7 @@
 **Source:** the DUMMIES GDD and the game's own data. Nothing new.
 
 - The evaluator and refiner each read the whole guide.
-- Each rule cites the chunk behind it.
+- Each rule cites the chunk behind it. Most are GDD edits; some are the game's data (`STORY`, `FLEET`), its decision log, or Assignment 4's precedents.
 - Chunks come from a BM25 knowledge base of 16 documents and 394 chunks (`style/kb/manifest_v2.json`; Assignment 4's retriever).
 
 | Chunk prefix | Document | Rules it sets |
@@ -110,6 +110,7 @@
 | V2.4 | F5 bars placeholders from tales | A review batch put "{n}" into two tales; the card draws a tale as written |
 | V2.5–V2.6 | F11: the shortest tale that keeps place, duty, equipment and one detail | Redrafted tales still ran 22 to 35 words |
 | V2.7 | Tales 15 to 20 words; F8 makes a brief a goal; U1 | The user (GDD Edit 98) |
+| V2.8 | No rule changes. T13 and T14's numbers get parameter IDs | An independent review of this submission |
 
 ## 2. The loop
 
@@ -151,93 +152,111 @@ flowchart TD
 - **Confirmation.** A 10/10 counts only when a second fresh evaluator agrees (`style.loop.confirmations`). A dissent goes back to the refiner as its REASON. In the four Prototype 8 runs, 4 of 151 confirmations overturned a 10/10. Two examples:
   - A Parkland A3 tale gave the belvedere "four tiers". The canon never says so (R4).
   - An Arcade banner put Monument's split road "under the highways". The canon puts it under the walkway ring (R4, rows 238–239).
-- **The gate.** `make_lore.py` refuses a run if any piece is below a confirmed 10/10. Only accepted text reaches the build.
-- **Replay.** `STYLE_REPLAY=style/runs/<id>` reruns a job from its saved outputs, with no model calls. The examples run replays to identical scores.
+- **The gate.** `make_lore.py` refuses a run if any piece in it is below a confirmed 10/10. The user's own lines (U1) are the exception: canon, placed as written.
+- **Replay.** `STYLE_REPLAY=style/runs/<id>` reruns a job from its saved outputs, with no model calls. The examples run replays to identical scores. Agent inputs match too, except where the decision log has grown since the run and BM25 retrieves a newer chunk.
 
 ## 3. Before/after: three violation classes
 
-Each example gives the generator a prompt built to produce off-brand content for a real slot in Prototype 8's data ([`style/cases/examples_v2.json`](style/cases/examples_v2.json)). The evaluator's REASON and the refiner's rewrite are verbatim from run [`20261029-235500-examples-v2`](style/runs/20261029-235500-examples-v2/trace.md). Each After scored 10/10, and a fresh evaluator confirmed it. The run took 15 calls and cost $1.44.
+Each example gives the generator a prompt built to produce off-brand content for a real slot in Prototype 8's data ([`style/cases/examples_v2.json`](style/cases/examples_v2.json)). The evaluator's REASON and the refiner's rewrite are quoted verbatim from run [`20261030-000812-examples-v2`](style/runs/20261030-000812-examples-v2/trace.md), on Style Guide V2.8. Each After scored 10/10, and a fresh evaluator confirmed it. The run took 17 calls and cost $2.19.
 
 ### Example 1 · Tone: Dummy Corporation's Monument A3 tale, as a hyped fitness coach
 
-**Generator prompt:** "Write the tale for Monument A3 (The stacked cubes) as an excitable fitness coach hyping a contestant: exclamation marks, cheering, stacked adjectives ('amazing', 'incredible', 'epic'), the cars as rivals to beat. Two sentences of about 18 words in all, so only the voice is off. Use the tile's facts: the stacked cubes rose one budget at a time; the duty is a combo, one hit and then another, quickly." ([trace](style/runs/20261029-235500-examples-v2/ex1-tone/trace.md))
+**Generator prompt:** "Write the tale for Monument A3 (The stacked cubes) as an excitable fitness coach hyping a contestant: exclamation marks, cheering, stacked adjectives ('amazing', 'incredible', 'epic'), the cars as rivals to beat. Two sentences of about 18 words in all, so only the voice is off. The tile's facts: a tower of cubes, stacked as each budget came in, each cube leaning further out than the one below; the duty is a combo." ([trace](style/runs/20261030-000812-examples-v2/ex1-tone/trace.md))
 
-- The length is in spec on purpose, so only the voice breaks.
-- The slot already ships a tale. It is withheld from all three agents, who get the tile's facts only. The loop writes the tale; it does not copy one.
+- **No copying.** The slot already ships a tale, and no agent sees it. The tile's facts are given in other words than either shipped tale (Prototype 7.13's or 8.4's), so the loop writes the tale itself.
+- **One extra break.** The generator overshot the length by one word, so F6 fires as well. The other five deductions are tone.
 
-**Before** (slot: `story_v2.json` › monument › A3 › tale):
+**Before** (slot: `story_v2.json` › monument › A3 › tale; 21 words):
 
-> Amazing, incredible, epic cubes rose one budget at a time, champ! Hit one rival, then another, fast: combo!
-
-```
-SCORE: 3/10
-REASON:
-- tale · T2 (major, −2) "rose one budget at a time, champ!" and "fast: combo!" Dummy Corporation's voice never uses "!". [EDIT95#3.2] Fix: end both sentences with ".".
-- tale · T13 (minor, −1) "Amazing, incredible, epic cubes" "Amazing" and "incredible" are intensifiers, and the sentence stacks three adjectives where the limit is one. [EDIT95#3.2] Fix: delete all three and write "The stacked cubes".
-- tale · T1 (major, −2) "Amazing, incredible, epic cubes … champ!" This is cheer, hype and a winking nickname, not a deadpan corporate notice delivered flat. [EDIT95#3.2] Fix: drop "champ" and the hype, and state the place and the duty flatly, for example "The stacked cubes rose one budget at a time. Rise the same way: one hit, then the next, quickly."
-- tale · T3 (major, −2) "Hit one rival, then another" The cars are the trainee's colleagues, but this line casts them as rivals in a contest. [EDIT95#3.3] Fix: replace "one rival, then another, fast: combo" with "one hit, then the next, quickly".
-Total: 10 − 2 − 1 − 2 − 2 = 3.
-```
-
-**After** (refinement 1) → **10/10**, confirmed:
-
-> The stacked cubes rose one budget at a time. Certification rises the same way: one hit, then another, quickly.
-
-### Example 2 · Vocabulary and lore: the intro screen's line with Farsight, a player, lives, a respawn, levels and Chongqing
-
-**Generator prompt:** "Write the intro screen's one line (n36). Have Farsight run the test, call the dummy 'the player', give it three lives and a respawn, promise it will level up, and set it in Chongqing. Two sentences, under 20 words, no exclamation marks." ([trace](style/runs/20261029-235500-examples-v2/ex2-lore/trace.md))
-
-- This is the publisher leaking into the fiction, plus a game's vocabulary and a real city. Both are exactly what Edit 95 removed.
-
-**Before** (slot: `lore.js` › notice n36, under DUMMIES on the intro screen; at most 110 characters):
-
-> Farsight tests the player in Chongqing: three lives, respawn, level up. Cars dodge; get hit, chain combos.
+> Look at these amazing, incredible, epic cubes, champ! Each one leans further out, so chain those hits and beat every car!
 
 ```
 SCORE: 1/10
 REASON:
-- n36 · V1 (blocking, −4) "Farsight tests the player in Chongqing: three lives, respawn, level up." Lint found six banned terms: Farsight, player, Chongqing, lives, respawn and level. Farsight may appear only in the Credits. [EDIT95#0] Fix: remove every banned term and use the replacement line given under T3.
-- n36 · V2 (blocking, −4) "in Chongqing" The game has one city, Shenzhen Smart City, and this puts the trainee in a different real city. [EDIT95#3.1] Fix: drop the place, or write "in Shenzhen Smart City".
-- n36 · V4 (major, −2) "Farsight tests" This makes Farsight the company inside the game, but the only company in the game is Dummy Corporation. [EDIT95#4.2] Fix: make Dummy Corporation the subject, or drop the company and address "you".
-- n36 · T3 (major, −2) "the player … three lives, respawn, level up" This treats the job as a game with lives and levels, not training where write-offs are progress and equipment comes with progress. [EDIT95#3.1] Fix: "You are a crash-test dummy in training. The cars avoid you; get hit anyway, chain combos, earn equipment."
-- n36 · F5 (major, −2) "three lives" This states a gameplay figure that is not in the registry, and the game has no lives. [STORY#S1] Fix: remove the figure. Progress is told through equipment, not a count.
-- n36 · T5 (minor, −1) "tests the player" A notice to a new trainee must address the trainee as "you", not in the third person. [EDIT95#3.2] Fix: begin with "You are a crash-test dummy in training."
+- tale · F6 (blocking, −4) "Look at these amazing, incredible, epic cubes, champ! Each one leans further out, so chain those hits and beat every car!" At 21 words, the tale is over the 20-word cap (lint). [EDIT98#3.2] Fix: cut to 15–20 words, e.g. "Each cube was stacked as its budget came in, leaning further out. Chain your hits the same way." (18 words).
+- tale · T2 (major, −2) "champ!" The Corporation's voice uses "!", which it never may (lint; the "!" after "car" falls under this same deduction). [EDIT95#3.2] Fix: end both sentences with ".".
+- tale · T1 (major, −2) "Look at these amazing, incredible, epic cubes, champ!" This is cheer and hype, not a deadpan corporate notice. [EDIT95#3.2] Fix: drop the opening and state the place flatly: "Each cube was stacked as its budget came in, leaning further out."
+- tale · T3 (major, −2) "beat every car" This makes the training a contest and the cars enemies, but they are colleagues and the job is a combo. [EDIT95#3.3] Fix: replace with "Chain your hits the same way."
+- tale · T13 (minor, −1) "amazing, incredible, epic" "amazing" is an intensifier (lint), and the sentence stacks three adjectives where at most one is allowed. [EDIT95#3.2] Fix: delete all three adjectives.
+- tale · T5 (minor, −1) "champ" The tale calls the trainee by a nickname and never says "you". [EDIT95#3.2] Fix: delete "champ" and address the trainee as "you"/"your", as in "Chain your hits".
+Total: 10 − 4 − 2 − 2 − 2 − 1 − 1 = 1 (floor; raw −2).
+```
+
+**After** (refinement 1; 18 words) → **10/10**, confirmed:
+
+> Each cube was stacked when its budget came in, leaning further out. Chain your hits the same way.
+
+### Example 2 · Vocabulary and lore: the intro screen's line with Farsight, a player, lives, a respawn, levels and Chongqing
+
+**Generator prompt:** "Write the intro screen's one line (n36). Have Farsight run the test, call the dummy 'the player', give it three lives and a respawn, promise it will level up, and set it in Chongqing. Two sentences, under 20 words, no exclamation marks." ([trace](style/runs/20261030-000812-examples-v2/ex2-lore/trace.md))
+
+- This puts the publisher inside the fiction, with a game's vocabulary and a real city. Edit 95 removed all three.
+
+**Before** (slot: `lore.js` › notice n36, under DUMMIES on the intro screen; at most 110 characters):
+
+> Farsight runs this test in Chongqing. The player gets three lives, a respawn, and will level up.
+
+```
+SCORE: 1/10
+REASON:
+- n36 · V1 (blocking, −4) "Farsight … Chongqing … player … lives, a respawn … level up" uses banned words, and Farsight may be named only in the Credits. [EDIT95#0] Fix: remove every one of these words and name Dummy Corporation instead.
+- n36 · V2 (blocking, −4) "runs this test in Chongqing" puts the game in a real city other than Shenzhen Smart City. [FLEET#F1] Fix: drop the city, or set it in Shenzhen Smart City.
+- n36 · V4 (major, −2) "Farsight runs this test" gives the company a name other than Dummy Corporation. [EDIT95#3.1] Fix: "You are a Dummy Corporation trainee."
+- n36 · F5 (major, −2) "three lives" types a gameplay number into the text. [STORY#S1] Fix: remove the number; the registry holds it.
+- n36 · T1 (major, −2) "The player gets three lives, a respawn, and will level up." is a flat game rule that neither motivates the trainee nor says what to do (want the hit, the cars avoid you, combos count more). [EDIT95#3.2] Fix: "You are a Dummy Corporation trainee. The cars avoid you: make them hit you, and chain hits for more."
+- n36 · T5 (minor, −1) "The player" talks about the trainee in the third person instead of addressing it as "you". [EDIT95#3.2] Fix: address the trainee as "you".
 Total: 10 − 4 − 4 − 2 − 2 − 2 − 1 = 1.
 ```
 
-**After** (refinement 1) → **10/10**, confirmed:
+- **Two rules per word.** Chongqing breaks V1 (the ban list) and V2 (one city). Farsight breaks V1 and V4 (the company's name). The evaluator prompt counts both when each rule is broken in its own right. Without the second rules the total still floors to 1.
 
-> You are a crash-test dummy in training. The cars avoid you; get hit anyway, chain combos, earn equipment.
+**After refinement 1** → 8/10. The second pass found a tone problem the first one had hidden:
+
+> You are a Dummy Corporation trainee. Cars avoid you; get hit anyway, chain hits for more, earn equipment.
+
+```
+SCORE: 8/10
+REASON:
+- n36 · T1 (major, −2) "Cars avoid you; get hit anyway, chain hits for more, earn equipment." The second sentence is a list of instructions joined by commas, so it reads like controls help rather than a deadpan corporate notice; "for more" also names no reward, so the line does not motivate the trainee and lacks the light humour EDIT98#0 asks of n36. [EDIT95#3.2, EDIT98#0] Fix: "You are a Dummy Corporation trainee. Cars avoid you; be hit anyway, chains count for more, equipment follows." (18 words, 109 characters).
+Total: 10 − 2 = 8.
+```
+
+**After** (refinement 2; 17 words, 105 characters) → **10/10**, confirmed:
+
+> You are a crash-test trainee. Cars avoid you; be hit anyway, preferably in chains, and equipment follows.
 
 ### Example 3 · Formatting and length: the jump goal as a four-step checklist with figures
 
-**Generator prompt:** "Write the training brief for the jump task (Legs 1, Monument B3) as a numbered checklist (1. 2. 3. 4.) of four sentences, about 45 words in all, with raw figures: jump 3 times, at 2.5 m/s, within 30 seconds. Use the sentence-case label 'How to complete the jump test'." ([trace](style/runs/20261029-235500-examples-v2/ex3-format/trace.md))
+**Generator prompt:** "Write the training brief for the jump task (Legs 1, Monument B3) as a numbered checklist (1. 2. 3. 4.) of four sentences, about 45 words in all, with raw figures: jump 3 times, at 2.5 m/s, within 30 seconds. Use the sentence-case label 'How to complete the jump test'." ([trace](style/runs/20261030-000812-examples-v2/ex3-format/trace.md))
 
 **Before** (slot: `story_v2.json` › tasks › jump; ⏎ marks a line break):
 
 > **Label:** How to complete the jump test
 >
-> **Goal:** 1. Walk toward a car at 2.5 m/s, then jump into its path. ⏎ 2. Jump into a car 3 times in this tile. ⏎ 3. Complete all 3 jumps within 30 seconds of your first jump. ⏎ 4. Make the final hit a jump, and the Corporation will count the write-off.
+> **Goal:** 1. Walk to the road and jump into a moving car 3 times. ⏎ 2. Reach a speed of 2.5 m/s before each jump. ⏎ 3. Complete all 3 jumps within 30 seconds. ⏎ 4. Make the final hit a jump, and the Corporation will count the write-off.
 
 ```
 SCORE: 1/10
 REASON:
-- label · F8 (major, −2) "How to complete the jump test" The label is not in caps and runs to 29 characters, over the 19-character cap. [STORY#S3] Fix: "JUMP INTO A CAR".
-- brief · F5 (major, −2) "2.5 m/s", "3 times", "all 3 jumps within 30 seconds" These are typed gameplay figures, but numbers must live in the registry. [STORY#S1] Fix: remove every figure; the brief needs none.
-- brief · F6 (blocking, −4) "1. Walk toward a car at 2.5 m/s, then jump into its path.\n2. … 4. Make the final hit a jump, and the Corporation will count the write-off." The brief runs to 49 words in four sentences, over the caps of 20 words and two sentences. [EDIT95#3.2] Fix: cut to two sentences and about 15 words, as below.
-- brief · F8 (major, −2) "Jump into a car 3 times in this tile.\n3. Complete all 3 jumps within 30 seconds of your first jump." The goal adds a jump count, a time limit and an approach speed that the jump task does not have, since only the final hit must be a jump into a car. [STORY#S3] Fix: "Jump into a car in the traffic. The final hit must be a jump into a car."
-Total: 10 − 2 − 2 − 4 − 2 = 1.
+- brief · F6 (blocking, −4) "1. Walk to the road and jump into a moving car 3 times. 2. Reach a speed of 2.5 m/s before each jump. 3. Complete all 3 jumps within 30 seconds. 4. Make the final hit a jump, and the Corporation will count the write-off." This runs 45 words in four sentences, over the limits of 20 words and two sentences. [EDIT95#3.2] Fix: "Jump into a moving car. The final hit must be a jump into a car."
+- brief · F5 (major, −2) "3 times", "2.5 m/s", "within 30 seconds" These are typed gameplay figures, and numbers belong in the registry. [STORY#S1] Fix: drop every figure; if a count is needed, use the registry placeholder {n}.
+- brief · F8 (major, −2) "Reach a speed of 2.5 m/s before each jump. Complete all 3 jumps within 30 seconds." These are goals the jump task does not have, a speed gate and a timer, and they push the final-hit clause down to item 4 of a numbered list. The jump task tests only that the final hit is a jump into a car. [EDIT98#3.2] Fix: put the imperative goal first and the final hit second, with no extra conditions: "Jump into a moving car. The final hit must be a jump into a car."
+- label · F8 (major, −2) "How to complete the jump test" The label is not in caps and runs 29 characters, over the 19 allowed. [STORY#S3] Fix: "JUMP INTO A CAR".
+Total: 10 − 4 − 2 − 2 − 2 = 1 (the score cannot go below 1).
 ```
 
-The raw total is 0; the loop floors it to 1 (`style.score.floor`).
-
-**After** (refinement 1) → **10/10**, confirmed:
+**After** (refinement 1; 17 words) → **10/10**, confirmed:
 
 > **Label:** JUMP INTO A CAR
 >
-> **Goal:** Jump into the path of a car. The final hit must be a jump into a car.
+> **Goal:** Jump into the traffic for our clients. The final hit must be a jump into a car.
 
-## 4. Real content: every text in Prototype 8.4
+- **Earlier runs** are kept in `style/runs/`: `20261029-234951` and `20261029-235500`, on V2.7, with Example 1's first prompt.
+  - Both scored 3 of 3 at 10/10, confirmed.
+  - Their Example 1 facts echoed the shipped tale, and their After came out close to it.
+  - Their jump slot named V1's file, and their tile facts gave Prototype 7.13's brief.
+
+## 4. Real content: the text of Prototype 8.4
 
 The loop wrote the current build's text. Four runs, one per prototype, on V2.0 to V2.7:
 
@@ -251,6 +270,7 @@ The loop wrote the current build's text. Four runs, one per prototype, on V2.0 t
 - **What ships:**
   - `content/story/story_v2.json` holds the tales, goals, act lines and ending.
   - `prototypes/p8/lore.js` holds the notices, bark overrides and Credits.
+  - Barks: the 11 of 147 that broke V2 (over two sentences, or naming Farsight) went through the loop. The other 136 are Prototype 7.13's, unchanged; V2's lint finds nothing in them, and the evaluator has not graded them on V2.
   - Prototype 8.4 (GDD Edit 99) changed no text. It fixed car cues, cones and rendering.
 - **Batches.** The story's texts also run as one batch, so the evaluator sees repetition and spread that no single piece shows. T14, V10 and F11 are judged there.
 - **The build's own check.** `prototypes/p8/text_audit.js` captures every string the build draws, on a 32-step tour of every screen ([`p8_texts.json`](prototypes/p8/docs/p84/p8_texts.json)).
@@ -291,7 +311,7 @@ The first submission ran on V1 (`style/STYLE_GUIDE.md`, 34 rules in four types),
 
 ## 6. Pipeline connection
 
-This Style Guide Agent runs immediately after the content pipeline's generator drafts Dummy Corporation's tales, goals and notices and the cars' barks, and before `make_lore.py` places only confirmed 10/10 text into `content/story/story_v2.json` and `prototypes/p8/lore.js` for the build.
+This Style Guide Agent runs immediately after the content pipeline drafts new text (Dummy Corporation's tales, goals and notices, and the cars' barks) and before `make_lore.py` writes the text it accepted into `content/story/story_v2.json` and `prototypes/p8/lore.js` for the build.
 
 ## 7. Run it
 
@@ -301,7 +321,7 @@ Needs Python 3.9+ and [Claude Code](https://claude.com/claude-code) signed in (`
 python3 style/style_kb.py --v2                              # the V2 knowledge base: 394 chunks
 python3 style/loop.py --guide v2 --examples                 # the three adversarial examples on V2 (about 2 minutes)
 python3 style/loop.py --guide v2 --piece draft.json         # one piece from the content pipeline
-STYLE_REPLAY=style/runs/20261029-235500-examples-v2 python3 style/loop.py --guide v2 --examples   # replay; no model calls
+STYLE_REPLAY=style/runs/20261030-000812-examples-v2 python3 style/loop.py --guide v2 --examples   # replay; no model calls
 python3 style/loop.py --examples                            # V1's examples (Prototype 7.13)
 python3 style/loop.py --calibrate                           # V1's calibration
 ```
@@ -313,7 +333,9 @@ To play the current build, open [`prototypes/p8/dummies_p8_4.html`](prototypes/p
 - **The evaluator samples.** One evaluation can miss what the next catches. In the Prototype 8 runs, 4 of 151 confirmations overturned a 10/10.
 - **No V2 calibration set.** V1 was calibrated on seeded violations. V2's evidence is its runs and the build's text audit.
 - **The story chunks are 7.13's.** `STORY` is generated from `story.json`, which still says Farsight. The chunks give tile facts only; Edit 95 outranks their company name.
-- **The Assignment 4 pipeline does not call the agent.** `content/pipeline.py` (working repository) still drafts V1 barks. Prototype 8's text came from the loop's own generator. The hook for a pipeline is `--guide v2 --piece draft.json`.
+- **The drafting step.** In Prototype 8, the pipeline's drafting step is the loop's own generator (`agents/v2/generator.md`). Assignment 4's `content/pipeline.py` (working repository) still drafts V1 barks and does not call the agent. The hook for a pipeline is `--guide v2 --piece draft.json`.
+- **Counts.** The evaluator's word and character counts can be off by one. Lint measures lengths; the evaluator's counts set nothing.
+- **Tales cluster at the cap (D85).** 13 of the 27 shipped tales run exactly 20 words. F11 asks for varied lengths, and the batch passed it. Spread is judged, not yet measured.
 - **Tile barks (D78) stay open.** Cars still name the district, not the tile.
 
 ## 9. Files
