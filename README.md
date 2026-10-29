@@ -2,6 +2,8 @@
 
 **ELVTR Multi-Agent Systems · Assignment 6 · Lawrence Lek · updated 29 October 2026 for Prototype 8.4**
 
+**Play Prototype 8.4:** https://lawrencelek.github.io/ELVTR-Multiagent-Submission-6/
+
 **Capstone:** DUMMIES, a top-down game. You are a crash-test dummy in training in SHENZHEN SMART CITY. The city's self-driving cars are its workers, built never to hit anyone. You get hit anyway, in combos, and earn your parts.
 
 - **Inside the game, the company is Dummy Corporation.** It manufactures custom dummies for high net-worth individuals. Certified dummies serve those clients and are sacrificed in their service (GDD Edit 95).
